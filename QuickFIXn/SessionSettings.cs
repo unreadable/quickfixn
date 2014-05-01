@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace QuickFix
@@ -87,7 +88,7 @@ namespace QuickFix
         {
             try
             {
-                FileStream fs = File.Open(file, FileMode.Open, FileAccess.Read);
+                FileStream fs = File.Open(Environment.ExpandEnvironmentVariables(file), FileMode.Open, FileAccess.Read);
                 Load(new StreamReader(fs));
                 fs.Close();
             }

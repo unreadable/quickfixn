@@ -426,7 +426,7 @@ namespace QuickFix.DataDictionary
 
 		public void Load(String path)
 		{
-			var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+			var stream = new FileStream(Environment.ExpandEnvironmentVariables(path), FileMode.Open, FileAccess.Read);
 			Load(stream);
 		}
 

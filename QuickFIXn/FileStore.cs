@@ -57,15 +57,16 @@ namespace QuickFix
 
         public FileStore(string path, SessionID sessionID)
         {
-            if (!System.IO.Directory.Exists(path))
-                System.IO.Directory.CreateDirectory(path);
+            var expandedPath = Environment.ExpandEnvironmentVariables(path);
+            if (!System.IO.Directory.Exists(expandedPath))
+                System.IO.Directory.CreateDirectory(expandedPath);
 
             string prefix = Prefix(sessionID);
 
-            seqNumsFileName_ = System.IO.Path.Combine(path, prefix + ".seqnums");
-            msgFileName_ = System.IO.Path.Combine(path, prefix + ".body");
-            headerFileName_ = System.IO.Path.Combine(path, prefix + ".header");
-            sessionFileName_ = System.IO.Path.Combine(path, prefix + ".session");
+            seqNumsFileName_ = System.IO.Path.Combine(expandedPath, prefix + ".seqnums");
+            msgFileName_ = System.IO.Path.Combine(expandedPath, prefix + ".body");
+            headerFileName_ = System.IO.Path.Combine(expandedPath, prefix + ".header");
+            sessionFileName_ = System.IO.Path.Combine(expandedPath, prefix + ".session");
 
             open();
         }

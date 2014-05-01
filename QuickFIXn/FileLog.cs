@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace QuickFix
 {
     /// <summary>
@@ -23,7 +25,7 @@ namespace QuickFix
 
         public FileLog(string fileLogPath, SessionID sessionID)
         {
-            Init(fileLogPath, Prefix(sessionID));
+            Init(Environment.ExpandEnvironmentVariables(fileLogPath), Prefix(sessionID));
         }   
         
 
