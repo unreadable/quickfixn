@@ -17,14 +17,8 @@ class Generator
   end
   
   def initialize
-    @fix40 = FIXDictionary.load spec('FIX40')
-    @fix41 = FIXDictionary.load spec('FIX41')
-    @fix42 = FIXDictionary.load spec('FIX42')
-    @fix43 = FIXDictionary.load spec('FIX43')
     @fix44 = FIXDictionary.load spec('FIX44')
-    @fix50 = FIXDictionary.load spec('FIX50')
-    @fix50sp1 = FIXDictionary.load spec('FIX50SP1')
-    @fix50sp2 = FIXDictionary.load spec('FIX50SP2')
+    @qfSpecific = FIXDictionary.load spec('QuickFixSpecificMessages')
     @src_path = File.join File.dirname(__FILE__), '..', 'QuickFIXn'
   end
 
@@ -39,24 +33,15 @@ class Generator
   end
 
   def agg_fields
-    field_names = (@fix40.fields.keys + @fix41.fields.keys +
-        @fix42.fields.keys + @fix43.fields.keys +
-        @fix44.fields.keys + @fix50.fields.keys +
-        @fix50sp1.fields.keys + @fix50sp2.fields.keys).uniq
+    field_names = (@qfSpecific.fields.keys + @fix44.fields.keys).uniq
     field_names.map {|fn| get_field_def(fn) }
   end
 
   def get_field_def fld_name
     # we give priority to latest fix version
     fld = merge_field_defs(
-      @fix50sp2.fields[fld_name],
-      @fix50sp1.fields[fld_name],
-      @fix50.fields[fld_name],
-      @fix44.fields[fld_name],
-      @fix43.fields[fld_name],
-      @fix42.fields[fld_name],
-      @fix41.fields[fld_name],
-      @fix40.fields[fld_name]
+      @qfSpecific.fields[fld_name],
+      @fix44.fields[fld_name]
     )
     
     raise "couldn't find field! #{fld}" if fld.nil?
@@ -77,14 +62,8 @@ class Generator
 
   def generate_messages
     msgs_path = File.join(@src_path, 'Message')
-    MessageGen.generate(@fix40.messages,  msgs_path, 'FIX40')
-    MessageGen.generate(@fix41.messages,  msgs_path, 'FIX41')
-    MessageGen.generate(@fix42.messages,  msgs_path, 'FIX42')
-    MessageGen.generate(@fix43.messages,  msgs_path, 'FIX43')
     MessageGen.generate(@fix44.messages,  msgs_path, 'FIX44')
-    MessageGen.generate(@fix50.messages,  msgs_path, 'FIX50')
-    MessageGen.generate(@fix50sp1.messages,  msgs_path, 'FIX50SP1')
-    MessageGen.generate(@fix50sp2.messages,  msgs_path, 'FIX50SP2')
+    #MessageGen.generate(@qfSpecific.messages,  msgs_path, 'QuickFixSpecific')
   end
 
   def generate_csproj
@@ -92,26 +71,16 @@ class Generator
     CSProjGen.generate(
       csproj_path,
       [
-        {:version=>'FIX40', :messages=>@fix40.messages},
-        {:version=>'FIX41', :messages=>@fix41.messages},
-        {:version=>'FIX42', :messages=>@fix42.messages},
-        {:version=>'FIX43', :messages=>@fix43.messages},
         {:version=>'FIX44', :messages=>@fix44.messages},
-        {:version=>'FIX50', :messages=>@fix50.messages}
+        #{:version=>'QuickFixSpecific', :messages=>@qfSpecific.messages},
       ]
     )
   end
 
   def generate_message_factories
     msgs_path = File.join(@src_path, 'Message')
-    MessageFactoryGen.generate(@fix40.messages,  msgs_path, 'FIX40')
-    MessageFactoryGen.generate(@fix41.messages,  msgs_path, 'FIX41')
-    MessageFactoryGen.generate(@fix42.messages,  msgs_path, 'FIX42')
-    MessageFactoryGen.generate(@fix43.messages,  msgs_path, 'FIX43')
     MessageFactoryGen.generate(@fix44.messages,  msgs_path, 'FIX44')
-    MessageFactoryGen.generate(@fix50.messages,  msgs_path, 'FIX50')
-    MessageFactoryGen.generate(@fix50sp1.messages,  msgs_path, 'FIX50SP1')
-    MessageFactoryGen.generate(@fix50sp2.messages,  msgs_path, 'FIX50SP2')
+    #MessageFactoryGen.generate(@qfSpecific.messages,  msgs_path, 'QuickFixSpecific')
   end
 end
 

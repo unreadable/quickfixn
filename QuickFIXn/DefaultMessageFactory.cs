@@ -16,12 +16,9 @@ namespace QuickFix
 
         public DefaultMessageFactory()
         {
-            _factories[FixValues.BeginString.FIX40] = new QuickFix.FIX40.MessageFactory();
-            _factories[FixValues.BeginString.FIX41] = new QuickFix.FIX41.MessageFactory();
-            _factories[FixValues.BeginString.FIX42] = new QuickFix.FIX42.MessageFactory();
-            _factories[FixValues.BeginString.FIX43] = new QuickFix.FIX43.MessageFactory();
+
             _factories[FixValues.BeginString.FIX44] = new QuickFix.FIX44.MessageFactory();
-            _factories[FixValues.BeginString.FIX50] = new QuickFix.FIX50.MessageFactory();
+
         }
 
         #region IMessageFactory Members

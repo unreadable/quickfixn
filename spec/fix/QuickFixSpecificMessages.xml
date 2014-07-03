@@ -1,0 +1,17 @@
+<fix major="4" minor="4">
+  <fields>
+    <field name='ApplVerID' number='1128' type='STRING'>
+      <value description='FIX27' enum='0'/>
+      <value description='FIX30' enum='1'/>
+      <value description='FIX40' enum='2'/>
+      <value description='FIX41' enum='3'/>
+      <value description='FIX42' enum='4'/>
+      <value description='FIX43' enum='5'/>
+      <value description='FIX44' enum='6'/>
+      <value description='FIX50' enum='7'/>
+      <value description='FIX50SP1' enum='8'/>
+      <value description='FIX50SP2' enum='9'/>
+    </field>
+    <field name='DefaultApplVerID' number='1137' type='STRING'/>
+  </fields>
+</fix>
